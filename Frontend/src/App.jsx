@@ -1,12 +1,17 @@
-import Signup from "./components/Signup"
+import { Route, Routes } from "react-router-dom";
+import Signup from "./Pages/Signup";
+import Login from "./Pages/Login";
 
 function App() {
-
   return (
     <>
-      <Signup/>
+      <Routes>
+        <Route index element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
