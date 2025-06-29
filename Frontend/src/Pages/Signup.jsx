@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -26,6 +26,7 @@ export default function Signup() {
         formData
       );
       console.log("User added:", response.data);
+      setError("");
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setError("Email already exists. Please use a different email.");
@@ -81,14 +82,22 @@ export default function Signup() {
             required
           />
         </div>
-          {error.length > 0 && <p className="text-red-500">{error}</p>}
+        {error.length > 0 && <p className="text-red-500">{error}</p>}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-800 transition-colors cursor-pointer"
         >
           Submit
         </button>
-        <p>Already have an account? <NavLink className="font-semibold transition-colors hover:text-blue-600 hover:underline" to="/login">Login</NavLink></p>
+        <p>
+          Already have an account?{" "}
+          <NavLink
+            className="font-semibold transition-colors hover:text-blue-600 hover:underline"
+            to="/login"
+          >
+            Login
+          </NavLink>
+        </p>
       </form>
     </div>
   );
