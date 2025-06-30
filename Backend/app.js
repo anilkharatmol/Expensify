@@ -2,7 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const database = require("./utils/database");
 const Users = require("./models/usersModel");
+const Expenses = require("./models/expensesModel");
 const userRouter = require("./routes/userRoutes");
+const expenseRouter = require("./routes/expenseRoutes");
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.get("/", (req,res)=>{
 })
 
 app.use("/user", userRouter)
+
+app.use("/expenses", expenseRouter)
 
 database
   .sync()

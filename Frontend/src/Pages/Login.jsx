@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { login } from "../store/authSlice";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -8,6 +10,8 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleChange(e) {
     setFormData({
@@ -24,9 +28,11 @@ export default function Login() {
         "http://localhost:4000/user/login",
         formData
       );
-      console.log("User Loggeg In:", response.data);
-      alert("User logged in successfully")
+      console.log("User Logged In:", response);
+      alert("User logged in successfully");
       setError("");
+      dispatch(login());
+      navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setError("Email doesn't exists");

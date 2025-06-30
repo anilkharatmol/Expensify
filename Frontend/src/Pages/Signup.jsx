@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -9,6 +9,7 @@ export default function Signup() {
     password: "",
   });
   const [error, setError] = useState("");
+  const navigate =useNavigate();
 
   function handleChange(e) {
     setFormData({
@@ -25,7 +26,9 @@ export default function Signup() {
         "http://localhost:4000/user/add",
         formData
       );
-      console.log("User added:", response.data);
+      console.log("User added:", response);
+      alert("Signed up successfully")
+      navigate("/login")
       setError("");
     } catch (error) {
       if (error.response && error.response.status === 409) {
