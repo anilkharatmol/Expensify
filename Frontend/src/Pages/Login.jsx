@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { login } from "../store/authSlice";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -11,7 +9,6 @@ export default function Login() {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   function handleChange(e) {
     setFormData({
@@ -28,10 +25,12 @@ export default function Login() {
         "http://localhost:4000/user/login",
         formData
       );
-      console.log("User Logged In:", response);
+
+      const { token } = response.data;
+      console.log("User Logged In:", response.data);
       alert("User logged in successfully");
+      localStorage.setItem("Token", token)
       setError("");
-      dispatch(login());
       navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 404) {

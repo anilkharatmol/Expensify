@@ -31,7 +31,12 @@ export default function AddExpenseForm() {
     try {
       const response = await axios.post(
         "http://localhost:4000/expenses/add",
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`
+          }
+        }
       );
 
       console.log("Item added", response);

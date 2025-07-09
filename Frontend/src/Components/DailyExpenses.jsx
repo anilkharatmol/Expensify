@@ -8,7 +8,11 @@ export default function DailyExpenses() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/expenses`);
+      const response = await axios.get(`http://localhost:4000/expenses`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("Token")}`
+        }
+      });
     
       setFetchedExpenses(response.data);
     } catch (err) {
@@ -22,7 +26,11 @@ export default function DailyExpenses() {
   
  async function handleDeleteExpense (id){
     try {
-        await axios.delete(`http://localhost:4000/expenses/delete/${id}`)
+        await axios.delete(`http://localhost:4000/expenses/delete/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Token")}`
+          }
+        });
 
         alert("Expense deleted successfully")
         

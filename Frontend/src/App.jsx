@@ -1,30 +1,28 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Signup from "./Pages/Signup";
 import Login from "./Pages/Login";
-import { useSelector } from "react-redux";
 import HomePage from "./Pages/HomePage";
 import DailyExpenses from "./Components/DailyExpenses";
 
 function App() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem("Token")));
 
-  console.log(isLoggedIn);
-  
+  useEffect(() => {
+    const handleStorage = () => {
+      setIsLoggedIn(Boolean(localStorage.getItem("Token")));
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   return (
     <Routes>
-      <Route index element={ !isLoggedIn ? <Login /> : <HomePage />} />
-      {!isLoggedIn ? (
-        <>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </>
-      ) : (
-        <>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/Daily" element={<DailyExpenses/>}/>
-        </>
-      )}
+      <Route path="/login" element={!isLoggedIn ? <Login setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" replace />} />
+      <Route path="/signup" element={!isLoggedIn ? <Signup /> : <Navigate to="/" replace />} />
+      <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/login" replace />} />
+      <Route path="/Daily" element={isLoggedIn ? <DailyExpenses /> : <Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />} />
     </Routes>
   );
 }
